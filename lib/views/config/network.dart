@@ -1,6 +1,7 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/providers/config.dart';
+import 'package:fl_clash/providers/state.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -118,6 +119,66 @@ class SystemProxyItem extends ConsumerWidget {
               .read(networkSettingProvider.notifier)
               .update((state) => state.copyWith(systemProxy: value));
         },
+      ),
+    );
+  }
+}
+
+class SystemProxyHostItem extends ConsumerWidget {
+  const SystemProxyHostItem({super.key});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final systemProxyHost = ref.watch(
+      networkSettingProvider.select((state) => state.systemProxyHost),
+    );
+    final optionsAsync = ref.watch(systemProxyHostOptionsProvider);
+
+    return optionsAsync.when(
+      data: (options) {
+        final optionsList = List<SystemProxyHostOption>.from(options);
+        final found =
+            optionsList.where((o) => o.address == systemProxyHost).toList();
+        final current = found.isNotEmpty
+            ? found.first
+            : SystemProxyHostOption(
+                systemProxyHost,
+                appLocalizations.systemProxyHostUnavailable(systemProxyHost),
+              );
+        if (found.isEmpty) {
+          optionsList.add(current);
+        }
+        return ListItem.options(
+          title: Text(appLocalizations.systemProxyHost),
+          subtitle: Text(
+            current.address == '127.0.0.1'
+                ? appLocalizations.systemProxyHostLocalhost
+                : current.label,
+          ),
+          delegate: OptionsDelegate<SystemProxyHostOption>(
+            title: appLocalizations.systemProxyHost,
+            value: current,
+            options: optionsList,
+            textBuilder: (opt) =>
+                opt.address == '127.0.0.1'
+                    ? appLocalizations.systemProxyHostLocalhost
+                    : opt.label,
+            onChanged: (value) {
+              if (value != null) {
+                ref.read(networkSettingProvider.notifier).update(
+                    (state) => state.copyWith(systemProxyHost: value.address));
+              }
+            },
+          ),
+        );
+      },
+      loading: () => ListItem(
+        title: Text(appLocalizations.systemProxyHost),
+        subtitle: Text(systemProxyHost),
+      ),
+      error: (_, __) => ListItem(
+        title: Text(appLocalizations.systemProxyHost),
+        subtitle: Text(systemProxyHost),
       ),
     );
   }
@@ -332,7 +393,11 @@ final networkItems = [
   if (system.isDesktop)
     ...generateSection(
       title: appLocalizations.system,
-      items: [SystemProxyItem(), BypassDomainItem()],
+      items: [
+        const SystemProxyItem(),
+        const SystemProxyHostItem(),
+        BypassDomainItem(),
+      ],
     ),
   ...generateSection(
     title: appLocalizations.options,

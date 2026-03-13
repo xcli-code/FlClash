@@ -12,8 +12,9 @@ class MethodChannelProxy extends ProxyPlatform {
   MethodChannelProxy();
 
   @override
-  Future<bool?> startProxy(int port, List<String> bypassDomain) async {
+  Future<bool?> startProxy(String host, int port, List<String> bypassDomain) async {
     return await methodChannel.invokeMethod<bool>("StartProxy", {
+      'host': host,
       'port': port,
       'bypassDomain': bypassDomain,
     });

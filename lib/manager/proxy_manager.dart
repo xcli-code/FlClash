@@ -19,7 +19,7 @@ class _ProxyManagerState extends ConsumerState<ProxyManager> {
     final systemProxy = proxyState.systemProxy;
     final port = proxyState.port;
     if (isStart && systemProxy) {
-      proxy?.startProxy(port, proxyState.bassDomain);
+      proxy?.startProxy(proxyState.host, port, proxyState.bassDomain);
     } else {
       proxy?.stopProxy();
     }

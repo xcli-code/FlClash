@@ -57,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m14(count) =>
       "${Intl.plural(count, one: '1 year ago', other: '${count} years ago')}";
 
+  static String m15(address) => "$address (may be disconnected)";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("About"),
@@ -781,6 +783,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxyDesc": MessageLookupByLibrary.simpleMessage(
       "Attach HTTP proxy to VpnService",
     ),
+    "systemProxyHost": MessageLookupByLibrary.simpleMessage("Proxy bind address"),
+    "systemProxyHostDesc": MessageLookupByLibrary.simpleMessage(
+      "Select the network address for system proxy (localhost or LAN)",
+    ),
+    "systemProxyHostLocalhost":
+        MessageLookupByLibrary.simpleMessage("127.0.0.1 (localhost only)"),
+    "systemProxyHostUnavailable": m15,
     "tab": MessageLookupByLibrary.simpleMessage("Tab"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("Tab animation"),
     "tabAnimationDesc": MessageLookupByLibrary.simpleMessage(

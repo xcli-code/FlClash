@@ -1249,6 +1249,46 @@ class AppLocalizations {
     );
   }
 
+  /// `Proxy bind address`
+  String get systemProxyHost {
+    return Intl.message(
+      'Proxy bind address',
+      name: 'systemProxyHost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the network address for system proxy (localhost or LAN)`
+  String get systemProxyHostDesc {
+    return Intl.message(
+      'Select the network address for system proxy (localhost or LAN)',
+      name: 'systemProxyHostDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `127.0.0.1 (localhost only)`
+  String get systemProxyHostLocalhost {
+    return Intl.message(
+      '127.0.0.1 (localhost only)',
+      name: 'systemProxyHostLocalhost',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{address} (may be disconnected)`
+  String systemProxyHostUnavailable(String address) {
+    return Intl.message(
+      '$address (may be disconnected)',
+      name: 'systemProxyHostUnavailable',
+      desc: '',
+      args: [address],
+    );
+  }
+
   /// `Unified delay`
   String get unifiedDelay {
     return Intl.message(

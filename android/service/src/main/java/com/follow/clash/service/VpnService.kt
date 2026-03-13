@@ -214,9 +214,10 @@ class VpnService : SystemVpnService(), IBaseService,
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && options.systemProxy) {
                 GlobalState.log("Open http proxy")
+                val proxyHost = options.systemProxyHost ?: "127.0.0.1"
                 setHttpProxy(
                     ProxyInfo.buildDirectProxy(
-                        "127.0.0.1", options.port, options.bypassDomain
+                        proxyHost, options.port, options.bypassDomain
                     )
                 )
             }

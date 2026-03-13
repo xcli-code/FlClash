@@ -50,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(count) => "${count}年前";
 
+  static String m15(address) => "$address (接続切れの可能性)";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("について"),
@@ -600,6 +602,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxyDesc": MessageLookupByLibrary.simpleMessage(
       "HTTPプロキシをVpnServiceに接続",
     ),
+    "systemProxyHost": MessageLookupByLibrary.simpleMessage("プロキシバインドアドレス"),
+    "systemProxyHostDesc": MessageLookupByLibrary.simpleMessage(
+      "システムプロキシに使用するネットワークアドレスを選択（localhostまたはLAN）",
+    ),
+    "systemProxyHostLocalhost":
+        MessageLookupByLibrary.simpleMessage("127.0.0.1 (ローカルのみ)"),
+    "systemProxyHostUnavailable": m15,
     "tab": MessageLookupByLibrary.simpleMessage("タブ"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("タブアニメーション"),
     "tabAnimationDesc": MessageLookupByLibrary.simpleMessage("モバイル表示でのみ有効"),

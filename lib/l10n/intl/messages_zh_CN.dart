@@ -50,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m14(count) => "${count} 年前";
 
+  static String m15(address) => "$address (可能已断开)";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("关于"),
@@ -530,6 +532,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemFont": MessageLookupByLibrary.simpleMessage("系统字体"),
     "systemProxy": MessageLookupByLibrary.simpleMessage("系统代理"),
     "systemProxyDesc": MessageLookupByLibrary.simpleMessage("设置系统代理"),
+    "systemProxyHost": MessageLookupByLibrary.simpleMessage("代理绑定地址"),
+    "systemProxyHostDesc": MessageLookupByLibrary.simpleMessage(
+      "选择系统代理使用的网络地址（本机或局域网）",
+    ),
+    "systemProxyHostLocalhost":
+        MessageLookupByLibrary.simpleMessage("127.0.0.1 (仅本机)"),
+    "systemProxyHostUnavailable": m15,
     "tab": MessageLookupByLibrary.simpleMessage("标签页"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("选项卡动画"),
     "tabAnimationDesc": MessageLookupByLibrary.simpleMessage("仅在移动视图中有效"),

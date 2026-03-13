@@ -13,6 +13,10 @@ import 'database.dart';
 
 part 'generated/state.g.dart';
 
+final systemProxyHostOptionsProvider =
+    FutureProvider.autoDispose<List<SystemProxyHostOption>>(
+        (ref) => getSystemProxyHostOptions());
+
 @riverpod
 GroupsState currentGroupsState(Ref ref) {
   final mode = ref.watch(
@@ -105,12 +109,16 @@ ProxyState proxyState(Ref ref) {
       (state) => VM2(state.systemProxy, state.bypassDomain),
     ),
   );
+  final systemProxyHost = ref.watch(
+    networkSettingProvider.select((state) => state.systemProxyHost),
+  );
   final mixedPort = ref.watch(
     patchClashConfigProvider.select((state) => state.mixedPort),
   );
   return ProxyState(
     isStart: isStart,
     systemProxy: vm2.a,
+    host: systemProxyHost,
     bassDomain: vm2.b,
     port: mixedPort,
   );
@@ -603,6 +611,9 @@ SharedState sharedState(Ref ref) {
   final bypassDomain = ref.watch(
     networkSettingProvider.select((state) => state.bypassDomain),
   );
+  final systemProxyHost = ref.watch(
+    networkSettingProvider.select((state) => state.systemProxyHost),
+  );
   final clashConfigVM2 = ref.watch(
     patchClashConfigProvider.select(
       (state) => VM2(state.tun.stack.name, state.mixedPort),
@@ -628,6 +639,7 @@ SharedState sharedState(Ref ref) {
       enable: vpnSetting.enable,
       stack: stack,
       systemProxy: vpnSetting.systemProxy,
+      systemProxyHost: systemProxyHost,
       port: port,
       ipv6: vpnSetting.ipv6,
       dnsHijacking: vpnSetting.dnsHijacking,

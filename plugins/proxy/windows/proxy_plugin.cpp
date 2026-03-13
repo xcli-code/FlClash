@@ -6,6 +6,7 @@
 #include <WinInet.h>
 #include <Ras.h>
 #include <RasError.h>
+#include <string>
 #include <vector>
 #include <iostream>
 
@@ -22,14 +23,14 @@
 #include <memory>
 #include <sstream>
 
-void startProxy(const int port, const flutter::EncodableList& bypassDomain)
+void startProxy(const std::string& host, const int port, const flutter::EncodableList& bypassDomain)
 {
   INTERNET_PER_CONN_OPTION_LIST list;
   DWORD dwBufSize = sizeof(list);
   list.dwSize = sizeof(list);
   list.pszConnection = nullptr;
 
-  auto url = "127.0.0.1:" + std::to_string(port);
+  auto url = host + ":" + std::to_string(port);
   auto wUrl = std::wstring(url.begin(), url.end());
   auto fullAddr = new WCHAR[url.length() + 1];
   wcscpy_s(fullAddr, url.length() + 1, wUrl.c_str());
@@ -180,9 +181,13 @@ namespace proxy
     else if (method_call.method_name().compare("StartProxy") == 0)
     {
       auto *arguments = std::get_if<flutter::EncodableMap>(method_call.arguments());
+      const auto host_it = arguments->find(flutter::EncodableValue("host"));
+      const std::string host = host_it != arguments->end()
+          ? std::get<std::string>(host_it->second)
+          : "127.0.0.1";
       auto port = std::get<int>(arguments->at(flutter::EncodableValue("port")));
       auto bypassDomain = std::get<flutter::EncodableList>(arguments->at(flutter::EncodableValue("bypassDomain")));
-      startProxy(port, bypassDomain);
+      startProxy(host, port, bypassDomain);
       result->Success(true);
     }
     else

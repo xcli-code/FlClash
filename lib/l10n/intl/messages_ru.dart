@@ -56,6 +56,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m14(count) =>
       "${Intl.plural(count, one: '${count} год назад', few: '${count} года назад', many: '${count} лет назад', other: '${count} года назад')}";
 
+  static String m15(address) => "$address (возможно отключено)";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("О программе"),
@@ -826,6 +828,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxyDesc": MessageLookupByLibrary.simpleMessage(
       "Прикрепить HTTP-прокси к VpnService",
     ),
+    "systemProxyHost": MessageLookupByLibrary.simpleMessage("Адрес привязки прокси"),
+    "systemProxyHostDesc": MessageLookupByLibrary.simpleMessage(
+      "Выберите сетевой адрес для системного прокси (localhost или LAN)",
+    ),
+    "systemProxyHostLocalhost":
+        MessageLookupByLibrary.simpleMessage("127.0.0.1 (только локально)"),
+    "systemProxyHostUnavailable": m15,
     "tab": MessageLookupByLibrary.simpleMessage("Вкладка"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("Анимация вкладок"),
     "tabAnimationDesc": MessageLookupByLibrary.simpleMessage(

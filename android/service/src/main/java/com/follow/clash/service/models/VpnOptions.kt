@@ -22,6 +22,7 @@ data class VpnOptions(
     val accessControlProps: AccessControlProps,
     val allowBypass: Boolean,
     val systemProxy: Boolean,
+    val systemProxyHost: String? = null,
     val bypassDomain: List<String>,
     val stack: String,
     val routeAddress: List<String>,

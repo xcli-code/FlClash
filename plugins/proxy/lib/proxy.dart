@@ -7,17 +7,16 @@ import 'proxy_platform_interface.dart';
 enum ProxyTypes { http, https, socks }
 
 class Proxy extends ProxyPlatform {
-  static String url = "127.0.0.1";
-
   @override
   Future<bool?> startProxy(
+    String host,
     int port, [
     List<String> bypassDomain = const [],
   ]) async {
     return switch (Platform.operatingSystem) {
-      "macos" => await _startProxyWithMacos(port, bypassDomain),
-      "linux" => await _startProxyWithLinux(port, bypassDomain),
-      "windows" => await ProxyPlatform.instance.startProxy(port, bypassDomain),
+      "macos" => await _startProxyWithMacos(host, port, bypassDomain),
+      "linux" => await _startProxyWithLinux(host, port, bypassDomain),
+      "windows" => await ProxyPlatform.instance.startProxy(host, port, bypassDomain),
       String() => false,
     };
   }
@@ -32,7 +31,7 @@ class Proxy extends ProxyPlatform {
     };
   }
 
-  Future<bool> _startProxyWithLinux(int port, List<String> bypassDomain) async {
+  Future<bool> _startProxyWithLinux(String host, int port, List<String> bypassDomain) async {
     try {
       final homeDir = Platform.environment['HOME']!;
       final configDir = join(homeDir, ".config");
@@ -87,7 +86,7 @@ class Proxy extends ProxyPlatform {
               "set",
               "org.gnome.system.proxy.${type.name}",
               "host",
-              url
+              host
             ],
           );
           cmdList.add(
@@ -128,7 +127,7 @@ class Proxy extends ProxyPlatform {
               "Proxy Settings",
               "--key",
               "${type.name}Proxy",
-              "${type.name}://$url:$port"
+              "${type.name}://$host:$port"
             ],
           );
         }
@@ -176,7 +175,7 @@ class Proxy extends ProxyPlatform {
     }
   }
 
-  Future<bool> _startProxyWithMacos(int port, List<String> bypassDomain) async {
+  Future<bool> _startProxyWithMacos(String host, int port, List<String> bypassDomain) async {
     try {
       final devices = await _getNetworkDeviceListWithMacos();
       for (final dev in devices) {
@@ -187,7 +186,7 @@ class Proxy extends ProxyPlatform {
           ),
           Process.run(
             "/usr/sbin/networksetup",
-            ["-setwebproxy", dev, url, "$port"],
+            ["-setwebproxy", dev, host, "$port"],
           ),
           Process.run(
             "/usr/sbin/networksetup",
@@ -195,7 +194,7 @@ class Proxy extends ProxyPlatform {
           ),
           Process.run(
             "/usr/sbin/networksetup",
-            ["-setsecurewebproxy", dev, url, "$port"],
+            ["-setsecurewebproxy", dev, host, "$port"],
           ),
           Process.run(
             "/usr/sbin/networksetup",
@@ -203,7 +202,7 @@ class Proxy extends ProxyPlatform {
           ),
           Process.run(
             "/usr/sbin/networksetup",
-            ["-setsocksfirewallproxy", dev, url, "$port"],
+            ["-setsocksfirewallproxy", dev, host, "$port"],
           ),
           Process.run(
             "/usr/sbin/networksetup",

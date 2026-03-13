@@ -162,6 +162,7 @@ abstract class VpnProps with _$VpnProps {
 abstract class NetworkProps with _$NetworkProps {
   const factory NetworkProps({
     @Default(true) bool systemProxy,
+    @Default(localhost) String systemProxyHost,
     @Default(defaultBypassDomain) List<String> bypassDomain,
     @Default(RouteMode.config) RouteMode routeMode,
     @Default(true) bool autoSetSystemDns,
