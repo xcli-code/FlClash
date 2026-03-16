@@ -97,7 +97,11 @@ class SystemProxyButton extends StatelessWidget {
                 type: type,
                 body: generateListView(
                   generateSection(
-                    items: [SystemProxyItem(), BypassDomainItem()],
+                    items: [
+                      const SystemProxyItem(),
+                      const SystemProxyHostItem(),
+                      BypassDomainItem(),
+                    ],
                   ),
                 ),
                 title: appLocalizations.systemProxy,
